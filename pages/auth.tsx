@@ -1,6 +1,7 @@
-import { useState, useCallback } from 'react';
 import axios from 'axios';
+import { useState, useCallback } from 'react';
 import Input from '@/components/Input';
+import { signIn } from 'next-auth/react';
 
 const NEW_USER = {
 	userType: 'new',
@@ -35,6 +36,19 @@ export default function Auth() {
 		}
 	}, [email, name, password]);
 
+	const login = useCallback(async () => {
+		try {
+			await signIn('credentials', {
+				email,
+				password,
+				redirect: false,
+				callbackUrl: '/',
+			});
+		} catch (error) {
+			console.log(error);
+		}
+	}, [email, password]);
+
 	return (
 		<div>
 			<h2>{variant.mainPrompt}</h2>
@@ -67,7 +81,10 @@ export default function Auth() {
 				type='password'
 				value={password}
 			/>
-			<button onClick={register} className='rounded-full py-2 px-4 bg-blue-600'>
+			<button
+				onClick={variant.userType === 'new' ? register : login}
+				className='rounded-full py-2 px-4 bg-blue-600'
+			>
 				{variant.mainPrompt}
 			</button>
 			<p>{variant.toggleButtonPrompt}</p>
