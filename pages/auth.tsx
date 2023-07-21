@@ -3,6 +3,8 @@ import { useState, useCallback } from 'react';
 import Input from '@/components/Input';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import { FcGoogle } from 'react-icons/fc';
+import { FaGithub } from 'react-icons/fa';
 
 const NEW_USER = {
 	userType: 'new',
@@ -93,6 +95,12 @@ export default function Auth() {
 			>
 				{variant.mainPrompt}
 			</button>
+			<button onClick={() => signIn('google', { callbackUrl: '/' })}>
+				<FcGoogle size={30} />
+			</button>
+			<button onClick={() => signIn('github', { callbackUrl: '/' })}>
+				<FaGithub size={30} />
+			</button>{' '}
 			<p>{variant.toggleButtonPrompt}</p>
 			<button
 				onClick={useCallback(() => {
