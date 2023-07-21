@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useState, useCallback } from 'react';
 import Input from '@/components/Input';
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/router';
+
 import { FcGoogle } from 'react-icons/fc';
 import { FaGithub } from 'react-icons/fa';
 
@@ -21,7 +21,6 @@ const EXISTING_USER = {
 };
 
 export default function Auth() {
-	const router = useRouter();
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
@@ -33,15 +32,12 @@ export default function Auth() {
 			await signIn('credentials', {
 				email,
 				password,
-				redirect: false,
-				callbackUrl: '/',
+				callbackUrl: '/profiles',
 			});
-
-			router.push('/');
 		} catch (error) {
 			console.log(error);
 		}
-	}, [email, password, router]);
+	}, [email, password]);
 
 	const register = useCallback(async () => {
 		try {
@@ -95,10 +91,10 @@ export default function Auth() {
 			>
 				{variant.mainPrompt}
 			</button>
-			<button onClick={() => signIn('google', { callbackUrl: '/' })}>
+			<button onClick={() => signIn('google', { callbackUrl: '/profiles' })}>
 				<FcGoogle size={30} />
 			</button>
-			<button onClick={() => signIn('github', { callbackUrl: '/' })}>
+			<button onClick={() => signIn('github', { callbackUrl: '/profiles' })}>
 				<FaGithub size={30} />
 			</button>{' '}
 			<p>{variant.toggleButtonPrompt}</p>
