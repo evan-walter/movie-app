@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useState, useCallback } from 'react';
 import Input from '@/components/Input';
 import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
 const NEW_USER = {
 	userType: 'new',
@@ -18,23 +19,12 @@ const EXISTING_USER = {
 };
 
 export default function Auth() {
+	const router = useRouter();
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
 	const [variant, setVariant] = useState(EXISTING_USER);
-
-	const register = useCallback(async () => {
-		try {
-			await axios.post('/api/register', {
-				email,
-				name,
-				password,
-			});
-		} catch (error) {
-			console.log(error);
-		}
-	}, [email, name, password]);
 
 	const login = useCallback(async () => {
 		try {
@@ -44,10 +34,26 @@ export default function Auth() {
 				redirect: false,
 				callbackUrl: '/',
 			});
+
+			router.push('/');
 		} catch (error) {
 			console.log(error);
 		}
-	}, [email, password]);
+	}, [email, password, router]);
+
+	const register = useCallback(async () => {
+		try {
+			await axios.post('/api/register', {
+				email,
+				name,
+				password,
+			});
+
+			login();
+		} catch (error) {
+			console.log(error);
+		}
+	}, [email, name, password, login]);
 
 	return (
 		<div>
