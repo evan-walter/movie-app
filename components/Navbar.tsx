@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 
-// const TOP_OFFSET = 66;
-const TOP_OFFSET = 1;
+const TOP_OFFSET = 1; // 66;
 
 export default function Navbar () {
     const [showBackground, setShowBackground] = useState(false);
