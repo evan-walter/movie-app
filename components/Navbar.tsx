@@ -1,6 +1,28 @@
+import { useState, useEffect } from 'react';
+
+// const TOP_OFFSET = 66;
+const TOP_OFFSET = 1;
+
 export default function Navbar () {
+    const [showBackground, setShowBackground] = useState(false);
+
+    useEffect(() => {
+        function handleScroll() {
+            setShowBackground(window.scrollY >= TOP_OFFSET);
+        }
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        }
+    }, [])
+
     return (
-        <nav>Navbar</nav>
+        <nav>
+            Navbar
+            {showBackground ? ' Background' : ' No Background'}
+        </nav>
     );
 }
 

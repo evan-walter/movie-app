@@ -25,7 +25,7 @@ export default function Home() {
 
 	return (
         <>
-            <div>
+            <div className='mt-16 h-screen'>
                 <Navbar />
             </div>
         </>
